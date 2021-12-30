@@ -89,6 +89,40 @@ def fifo():
                     frame[j] = ref_string[i]
                     flag2 = 1
                     break
+                    
+                    
+                if flag2 == 0:
+            flag3 = 0
+            for j in range(0, no_of_frames):
+                temp[j] = -1
+                for k in range(i + 1, no_of_pages):
+                    if frame[j] == ref_string[k]:
+                        temp[j] = k
+                        break
+
+            for j in range(0, no_of_frames):
+                if temp[j] == -1:
+                    position = j
+                    flag3 = 1
+                    break
+
+            if flag3 == 0:
+                max = temp[0]
+                position = 0
+
+                for j in range(1, no_of_frames):
+                    if temp[j] > max:
+                        max = temp[j]
+                        position = j
+
+            frame[position] = ref_string[i]
+            count_page_faults = count_page_faults + 1
+
+    print("String after")
+    for n in range(0, no_of_frames):
+        print(frame[n])
+
+    print("Page faults = " + str(count_page_faults))
 
     
     
@@ -103,6 +137,9 @@ if __name__ == "__main__":
             fifo()
         if c == 'l' or c == 'L':
             LRU()
+            
+        if c == 'o' or c == 'O':
+            optimal()
     
             
          case = str(input("Would you like another algorithm ? type 'Y'... and 'N' to End: "))
