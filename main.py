@@ -25,6 +25,72 @@ def fifo():
 
     print("Page faults = " + str(count_page_faults))
     
+    def LRU():
+    count_page_faults = 0
+
+    no_of_frames = int(input("Enter number of frames: "))
+    frame = [-1 for i in range(no_of_frames)]
+    fcount = [0 for i in range(no_of_frames)]
+    no_of_pages = int(input("Enter number of pages: "))
+    ref_string = list(map(str, input("Enter reference string: ").split()))
+
+    count = 0
+    while count < no_of_pages:
+        j = 0
+        flag = 0
+
+        while j < no_of_frames:
+            if ref_string[count] == frame[j]:
+                flag = 1
+                fcount[j] = count + 1
+            j = j + 1
+        j = 0
+
+        if flag == 0:
+            min = 0
+            k = 0
+            while k < no_of_frames - 1:
+                if fcount[min] > fcount[k + 1]:
+                    min = k + 1
+                k = k + 1
+            frame[min] = ref_string[count]
+            fcount[min] = count + 1
+            count_page_faults = count_page_faults + 1
+        count = count + 1
+
+    print("String after")
+    for n in range(0, no_of_frames):
+        print(frame[n])
+
+    print("Page faults = " + str(count_page_faults))
+    
+    
+    def optimal():
+    count_page_faults = 0
+    temp = []
+    temp = [0 for i in range(10)]
+    no_of_frames = int(input("Enter number of frames: "))
+    frame = [-1 for i in range(no_of_frames)]
+    no_of_pages = int(input("Enter number of pages: "))
+    ref_string = list(map(str, input("Enter reference string: ").split()))
+
+    for i in range(0, no_of_pages):
+        flag1 = flag2 = 0
+        for j in range(0, no_of_frames):
+            if frame[j] == ref_string[i]:
+                flag1 = 1
+                flag2 = 1
+                break
+
+        if flag1 == 0:
+            for j in range(0, no_of_frames):
+                if frame[j] == -1:
+                    count_page_faults = count_page_faults + 1
+                    frame[j] = ref_string[i]
+                    flag2 = 1
+                    break
+
+    
     
     
     # main
@@ -35,5 +101,8 @@ if __name__ == "__main__":
         c = str(input("Enter 'f' for FIFO , 'l' for LRU, and 'o' for optimal: "))
         if c == 'f' or c == 'F':
             fifo()
+        if c == 'l' or c == 'L':
+            LRU()
+    
             
          case = str(input("Would you like another algorithm ? type 'Y'... and 'N' to End: "))
